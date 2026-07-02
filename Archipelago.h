@@ -312,3 +312,6 @@ void AP_UseGiftAutoReject(bool enable);
 
 // Enabled the gifting api functions, should be configured before AP_Start get called, defaults to off
 void AP_SetGiftingSupported(bool);
+
+// Manually confirm received items for games without auto-save (use on save)
+void AP_ConfirmReceivedItems();

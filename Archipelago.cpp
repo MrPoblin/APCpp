@@ -985,18 +985,6 @@ bool parse_response(std::string msg, std::string &request) {
                 }
             }
             last_item_idx = item_idx == 0 ? root[i]["items"].size() : last_item_idx + root[i]["items"].size();
-            AP_SetServerDataRequest request;
-            request.key = "APCppLastRecv" + ap_player_name + std::to_string(ap_player_id);
-            AP_DataStorageOperation replac;
-            replac.operation = "replace";
-            replac.value = &last_item_idx;
-            std::vector<AP_DataStorageOperation> operations;
-            operations.push_back(replac);
-            request.operations = operations;
-            request.default_value = 0;
-            request.type = AP_DataType::Int;
-            request.want_reply = false;
-            AP_SetServerData(&request);
         } else if (cmd == "RoomUpdate") {
             //Sync checks with server
             for (unsigned int j = 0; j < root[i]["checked_locations"].size(); j++) {
@@ -1177,4 +1165,19 @@ AP_NetworkPlayer getPlayer(int team, std::string name) {
         "ERR"
     };
     return ERR_Player;
+}
+
+void AP_ConfirmReceivedItems() {
+    AP_SetServerDataRequest request;
+    request.key = "APCppLastRecv" + ap_player_name + std::to_string(ap_player_id);
+    AP_DataStorageOperation replac;
+    replac.operation = "replace";
+    replac.value = &last_item_idx;
+    std::vector<AP_DataStorageOperation> operations;
+    operations.push_back(replac);
+    request.operations = operations;
+    request.default_value = 0;
+    request.type = AP_DataType::Int;
+    request.want_reply = false;
+    AP_SetServerData(&request);
 }
